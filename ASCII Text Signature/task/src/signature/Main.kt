@@ -1,5 +1,7 @@
-cd package signature
+package signature
 
 fun main() {
-    println("Hello, World!")
+    println(" _____________\n" +
+            "| Hyper Skill |\n" +
+            " ¯¯¯¯¯¯¯¯¯¯¯¯¯")
 }
