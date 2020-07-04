@@ -1046,6 +1046,9 @@ files:
     ++/++
     +/__+""".replace('+', ' ') // this works so, because someone (like stepik) possibly deletes trailing spaces in lines.
   learner_created: false
+- name: src/signature/Main.kt
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/71/stages/393/implement
 status: Unchecked
-record: -1
+record: 4

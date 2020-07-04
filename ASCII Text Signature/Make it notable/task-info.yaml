@@ -247,6 +247,13 @@ files:
         return framed(centeredLines(lines))
     }
   learner_created: false
+- name: src/signature/Main.kt
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/71/stages/392/implement
-status: Unchecked
-record: -1
+status: Solved
+feedback:
+  message: Congratulations! Continue on <a href="https://hyperskill.org/projects/71/stages/392/implement">JetBrains
+    Academy</a>
+  time: Sat, 04 Jul 2020 09:12:35 UTC
+record: 3
