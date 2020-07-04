@@ -1,93 +1,86 @@
 package signature
 
+import java.io.File
 import java.util.*
+
+fun parseFont(path: String, spaceLength: Int): Array<Array<String>> {
+    val scanner = Scanner(File(path))
+
+    val linesInLetter = scanner.nextInt()
+    scanner.nextLine()
+    val lettersLines = Array(linesInLetter) { Array(53) { "" } }
+
+    for (letterIndex in 0 until 52) {
+        scanner.nextLine()
+        for (lettersLine in lettersLines) {
+            lettersLine[letterIndex] = scanner.nextLine()
+        }
+    }
+
+    for (lettersLine in lettersLines) {
+        repeat(spaceLength) {
+            lettersLine[52] += " "
+        }
+    }
+
+    return lettersLines
+}
+
+fun getStringLinesWithFont(string: String, font: Array<Array<String>>): Array<String> {
+    val stringLines = Array(font.size) { "" }
+
+    for (letter in string) {
+        for (lineIndex in font.indices) {
+            stringLines[lineIndex] += font[lineIndex][when {
+                letter == ' ' -> 52
+                letter.isLowerCase() -> letter - 'a'
+                else -> letter - 'A' + 26
+            }]
+        }
+    }
+
+    return stringLines
+}
+
+fun printLine(line: String, size: Int) {
+    val totalSpaces = if (size > line.length) size - line.length else 0
+    val leftSpaces = totalSpaces / 2
+    val rightSpaces = if (totalSpaces == 0) 0 else (totalSpaces - 1) / 2 + 1
+
+    print("88  ")
+    repeat(leftSpaces) {
+        print(' ')
+    }
+    print(line)
+    repeat(rightSpaces) {
+        print(' ')
+    }
+    println("  88")
+}
+
+fun printLineWithCharacters(character: Char, size: Int) {
+    repeat(size) {
+        print(character)
+    }
+    println()
+}
 
 fun main() {
     val scanner = Scanner(System.`in`)
+    val romanFont = parseFont("/home/nikita/Projects/IdeaProjects/ASCII Text Signature/font/roman.txt", 10)
+    val mediumFont = parseFont("/home/nikita/Projects/IdeaProjects/ASCII Text Signature/font/medium.txt", 5)
 
-    val font = "____ ___  ____ ___  ____ ____ ____ _  _ _  _ _  _ _    _  _\n" +
-            "|__| |__] |    |  \\ |___ |___ | __ |__| |  | |_/  |    |\\/|\n" +
-            "|  | |__] |___ |__/ |___ |    |__] |  | | _| | \\_ |___ |  |\n" +
-            "_  _ ____ ___  ____ ____ ____ ___ _  _ _  _ _ _ _ _  _ _   _ ___ \n" +
-            "|\\ | |  | |__] |  | |__/ [__   |  |  | |  | | | |  \\/   \\_/    / \n" +
-            "| \\| |__| |    |_\\| |  \\ ___]  |  |__|  \\/  |_|_| _/\\_   |    /__"
+    val nameLines = getStringLinesWithFont(scanner.nextLine(), romanFont)
+    val statusLines = getStringLinesWithFont(scanner.nextLine(), mediumFont)
 
-    val fontLines = font.split('\n')
-    val concatenatedFontLines = Array<String>(3) { "" }
+    val tagLength = if (statusLines[0].length > nameLines[0].length) statusLines[0].length else nameLines[0].length
 
-    var currentLine = 0
-    for (line in fontLines) {
-        concatenatedFontLines[currentLine] += "$line "
-        ++currentLine
-        if (currentLine == 3) {
-            currentLine = 0
-        }
-    }
-
-    val lettersLines = Array(3) { Array(26) { "" } }
-
-    var currentLetter = 0
-    for (i in concatenatedFontLines[0].indices) {
-        for (j in 0..2) {
-            lettersLines[j][currentLetter] = lettersLines[j][currentLetter] + concatenatedFontLines[j][i]
-        }
-        if (concatenatedFontLines[0][i] == ' ' && concatenatedFontLines[1][i] == ' ' && concatenatedFontLines[2][i] == ' ') {
-            ++currentLetter
-        }
-    }
-
-    val name = scanner.nextLine()
-    val nameLines = Array(3) { "" }
-    for (l in name) {
-        for (i in lettersLines.indices) {
-            if (l == ' ') {
-                nameLines[i] += "     "
-            } else {
-                nameLines[i] += lettersLines[i][l.toLowerCase() - 'a']
-            }
-        }
-    }
-
-    val status = scanner.nextLine() + " "
-    val tagLength = if (status.length > nameLines[0].length) status.length else nameLines[0].length
-
-
-    repeat(tagLength + 1 + 2 + 1 + 1) {
-        print('*')
-    }
-    println()
+    printLineWithCharacters('8', tagLength + 8)
     for (i in nameLines) {
-        print("*  ")
-        if (tagLength > i.length) {
-            repeat((tagLength - i.length) / 2) {
-                print(' ')
-            }
-        }
-        print(i)
-        if (tagLength > i.length) {
-            repeat((tagLength - i.length - 1) / 2 + 1) {
-                print(' ')
-            }
-        }
-        println(" *")
+        printLine(i, tagLength)
     }
-
-    print("*  ")
-    if (tagLength > status.length) {
-        repeat((tagLength - status.length) / 2) {
-            print(' ')
-        }
+    for (i in statusLines) {
+        printLine(i, tagLength)
     }
-    print(status)
-    if (tagLength > status.length) {
-        repeat((tagLength - status.length - 1) / 2 + 1) {
-            print(' ')
-        }
-    }
-    println(" *")
-
-    repeat(tagLength + 1 + 2 + 1 + 1) {
-        print('*')
-    }
-    println()
+    printLineWithCharacters('8', tagLength + 8)
 }
