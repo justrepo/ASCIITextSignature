@@ -119,6 +119,13 @@ files:
         }
     }
   learner_created: false
+- name: src/signature/Main.kt
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/71/stages/391/implement
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations! Continue on <a href="https://hyperskill.org/projects/71/stages/391/implement">JetBrains
+    Academy</a>
+  time: Sat, 04 Jul 2020 06:10:13 UTC
 record: -1
